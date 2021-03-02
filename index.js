@@ -27,5 +27,6 @@ api.getCards()
         // Do something with the cards
     })
     .catch(err => {
+        console.log('err:', err);
         // handle errors
     })
