@@ -1,32 +1,27 @@
-// const token = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImMxNGNkMDU2LTA1Y2YtNDdjMi1iMmZlLTQ5MGE0OGU4NDJlYiIsImlhdCI6MTYxNDQ4NjUyMCwic3ViIjoiZGV2ZWxvcGVyL2NkODFjNzU3LTgxZmUtOGE1MC1hOTA1LWQyMmM4NGVjMDI2MSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI3Ny44Ny40MS4xNjAiLCI3Ny44Ny40MS4xODEiXSwidHlwZSI6ImNsaWVudCJ9XX0.Y5UzyLVmae4u-UW8cvqof-rRSTK-78hJ30MYpshlWt3oUH4LupfPGfo3SvheeOB2QKWHAHZQN1T5lEueZs7oLw';
-// async function fn () {
-//     const url = 'https://api.clashroyale.com/v1/cards';
-//     const options = {
-//         headers: {
-//             Accept: 'application/json',
-//             authorization: token
-//         }
-//     };
-//     fetch(url, options)
-//         .then(response => response.json())
-//         .then(resp => console.log(resp));
-// }
-//
-// fn();
-// Import the package
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImFmZGEzM2ZkLWVjNzMtNDJjMi04ZmZiLTQwMGMwMzQ2MmFlOSIsImlhdCI6MTYxNDcwOTQ5Miwic3ViIjoiZGV2ZWxvcGVyL2NkODFjNzU3LTgxZmUtOGE1MC1hOTA1LWQyMmM4NGVjMDI2MSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIxMDQuMTk4LjE0LjUyIl0sInR5cGUiOiJjbGllbnQifV19.h3IZU6TpBNizFfkV30EGuI1w956-j6zOR1Z_mN8TKIK8bglQk_ge1Whj52Q59QAboBeeg0CGFbS-rtPVwLPduA';
-const { ClashRoyaleAPI } = require('@varandas/clash-royale-api')
+const axios = require('axios');
 
-// Initialize the api
-const api = new ClashRoyaleAPI(token)
+const token = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjRkMjQzZjZlLWQxNTItNGU4ZC05YWFmLTQ0NGJiZWQ0M2NmMSIsImlhdCI6MTYxNTA0NTQ5Mywic3ViIjoiZGV2ZWxvcGVyL2NkODFjNzU3LTgxZmUtOGE1MC1hOTA1LWQyMmM4NGVjMDI2MSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIxOTUuMTguMjkuMTM4Il0sInR5cGUiOiJjbGllbnQifV19.dXLQZ0Y31hUFzxVphGDi5v6QrBBP31o9YbcaMXqk83dEAQrjjr5w1sA5t22XPojW1hZwu_zAXjbR4pS8yKolew';
+const baseUrl = 'https://api.clashroyale.com/v1'
+const uri = {
+    Cards: '/cards',
+    Clans: '/clans',
+    WarLog(clanTag) {return `clans/${clanTag}/warlog`},
+    RiverRaceLog(clanTag) { return `/clans/${clanTag}/riverracelog`},
+    CurrentWar(clanTag) {return `/clans/${clanTag}/currentwar`},
+    ClanInfo(clanTag) {return `/clans/${clanTag}`},
+    ListClanMembers(clanTag) {return `/clans/${clanTag}/members`},
+    ClanInfo(clanTag) {return `/clans/${clanTag}`},
+    ClanInfo(clanTag) {return `/clans/${clanTag}`},
 
-// Use the api to get cards
-api.getCards()
-    .then(cards => {
-        console.log('cards:', cards);
-        // Do something with the cards
-    })
-    .catch(err => {
-        console.log('err:', err);
-        // handle errors
-    })
+};
+// const url = 'https://api.clashroyale.com/v1/cards';
+const url = `${baseUrl}${uri.Cards}`;
+console.log('url:', url);
+const options = {
+    headers: {
+        Accept: 'application/json',
+        authorization: token
+    }
+};
+axios(url, options)
+    .then(resp => console.log(resp));
